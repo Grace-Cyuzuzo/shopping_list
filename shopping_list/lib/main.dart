@@ -4,10 +4,6 @@ void main() {
   runApp(const ShoppingApp());
 }
 
-// ─────────────────────────────────────────────────────────────
-// MODEL
-// ─────────────────────────────────────────────────────────────
-
 class Item {
   Item(this.name);
 
@@ -17,10 +13,6 @@ class Item {
   String note = '';
   String category = 'Food';
 }
-
-// ─────────────────────────────────────────────────────────────
-// APP SHELL
-// ─────────────────────────────────────────────────────────────
 
 class ShoppingApp extends StatelessWidget {
   const ShoppingApp({super.key});
@@ -34,10 +26,6 @@ class ShoppingApp extends StatelessWidget {
     );
   }
 }
-
-// ─────────────────────────────────────────────────────────────
-// HOME SCREEN
-// ─────────────────────────────────────────────────────────────
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.title});
@@ -53,7 +41,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final controller = TextEditingController();
   String filter = 'All';
 
-  // ── Add item (with no-duplicate rule) ─────────────────────
   void addItem() {
     final text = controller.text.trim();
 
@@ -91,7 +78,6 @@ class _HomeScreenState extends State<HomeScreen> {
     controller.clear();
   }
 
-  // ── Clear bought items ────────────────────────────────────
   void clearBought() {
     setState(() {
       items.removeWhere((item) => item.bought);
@@ -108,7 +94,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final left = items.where((item) => !item.bought).length;
 
-    // ── Filtered + sorted list ────────────────────────────────
     List<Item> shown;
     if (filter == 'To buy') {
       shown = items.where((i) => !i.bought).toList();
@@ -133,7 +118,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(
         children: [
-          // ── Input row ────────────────────────────────────────
           Padding(
             padding: const EdgeInsets.all(12),
             child: Row(
@@ -141,9 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Expanded(
                   child: TextField(
                     controller: controller,
-                    decoration: const InputDecoration(
-                      hintText: 'Add an item',
-                    ),
+                    decoration: const InputDecoration(hintText: 'Add an item'),
                     onSubmitted: (_) => addItem(),
                   ),
                 ),
@@ -155,8 +137,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-
-          // ── Filter chips ─────────────────────────────────────
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Row(
@@ -181,8 +161,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-
-          // ── List ─────────────────────────────────────────────
           Expanded(
             child: items.isEmpty
                 ? const Center(child: Text('Your list is empty'))
@@ -207,9 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           : null,
                     ),
                   ),
-                  subtitle: Text(
-                    '${item.category} · ${item.note}',
-                  ),
+                  subtitle: Text('${item.category} · ${item.note}'),
                   onTap: () {
                     setState(() {
                       item.bought = !item.bought;
@@ -233,9 +209,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         icon: const Icon(Icons.remove),
                         onPressed: () {
                           setState(() {
-                            if (item.quantity > 1) {
-                              item.quantity--;
-                            }
+                            if (item.quantity > 1) item.quantity--;
                           });
                         },
                       ),
@@ -252,26 +226,22 @@ class _HomeScreenState extends State<HomeScreen> {
                         icon: const Icon(Icons.delete_outline),
                         onPressed: () {
                           final removed = item;
-                          final position =
-                          items.indexOf(removed);
-
+                          final position = items.indexOf(removed);
                           setState(() {
                             items.remove(removed);
                           });
-
                           ScaffoldMessenger.of(context)
                               .hideCurrentSnackBar();
                           ScaffoldMessenger.of(context)
                               .showSnackBar(
                             SnackBar(
-                              content: Text(
-                                  '${removed.name} removed'),
+                              content:
+                              Text('${removed.name} removed'),
                               action: SnackBarAction(
                                 label: 'Undo',
                                 onPressed: () {
                                   setState(() {
-                                    items.insert(
-                                        position, removed);
+                                    items.insert(position, removed);
                                   });
                                 },
                               ),
@@ -290,10 +260,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
-// ─────────────────────────────────────────────────────────────
-// DETAILS SCREEN
-// ─────────────────────────────────────────────────────────────
 
 class DetailsScreen extends StatefulWidget {
   const DetailsScreen({super.key, required this.item});
@@ -332,11 +298,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
       );
       return;
     }
-
     widget.item.name = name;
     widget.item.note = noteController.text.trim();
     widget.item.category = category;
-
     Navigator.pop(context);
   }
 
