@@ -44,7 +44,17 @@ A Flutter shopping list app built during Mobile Programming (Week 2, Session 3).
 
 ## Screenshots
 
-Coming soon — will be added to the `screenshots/` folder.
+### Quantities
+![Quantities](screenshots/quantities.png)
+
+### Undo
+![Undo](screenshots/undo.png)
+
+### Bought filter
+![Bought filter](screenshots/bought.png)
+
+### Item details
+![Item details](screenshots/details.png)
 
 ## Project structure
 
